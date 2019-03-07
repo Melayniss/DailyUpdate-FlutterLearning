@@ -106,13 +106,25 @@ class RandomWordsState extends State<RandomWords>{
         //生成的单词对要进行大驼峰式命名法美化；step4
         style: _biggerFont,
         //style属性的值设为之前声明的biggerFont变量改变字号大小；step4
-      ), 
+      ),
       trailing: Icon(
         alreadySaved ? Icons.star : Icons.star_border,
         //if语句三段式，按照bool类型值来判断是否改变icon绘图；step5
         color: alreadySaved ? Colors.yellow : null,
         //if语句三段式，按照bool类型值来判断是否改变颜色；step5
       ),
+      onTap: (){
+        //增加一个onTap方法，在方法中调用setState() + if判断 来改变交互状态；step6
+        setState(() {
+          if(alreadySaved){
+            _saved.remove(wordPair);
+          }
+          else{
+            _saved.add(wordPair);
+          }
+          //setState()中用if语句来判断用户行为，从而改变_saved List中的值
+        });
+      },
     );
   }
 }//step3
