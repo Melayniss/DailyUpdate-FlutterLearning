@@ -65,6 +65,12 @@ class RandomWordsState extends State<RandomWords>{
     return new Scaffold(
       appBar: new AppBar(
         title: new Text('Text from RWS\'title'),
+
+        actions: <Widget>[
+          new IconButton(icon: const Icon(Icons.list), onPressed: _pushSaved)
+        ],
+        //添加一个actions，其中包含一个icon，以及点击icon触发的压面跳转；step 7
+
       ),
       body: _buildSuggestions(),
     );
@@ -127,4 +133,48 @@ class RandomWordsState extends State<RandomWords>{
       },
     );
   }
+
+  void _pushSaved(){
+    Navigator.of(context).push(
+      //表示添加在导航栏部分添加 Navigator.push 调用，实现路由入栈（以后路由入栈均指推入到导航管理器的栈）；step7
+      new MaterialPageRoute<void>(
+          builder: (BuildContext context){
+            //在push调用中新建MaterialPageRoute 及其 builder（构造器）；
+            final Iterable<ListTile> tiles = _saved.map(
+                (WordPair pair){
+                  return new ListTile(
+                    title: new Text(
+                      pair.asPascalCase,
+                      style: _biggerFont,
+                    ),
+                  );
+                }
+            );
+            //生成 ListTile 行；step7
+
+            final List<Widget> divided = ListTile.divideTiles(
+              //ListTile 的 divideTiles() 方法，使得每个 ListTile 之间有 1 像素的分割线；step7
+              // divided 变量持有最终的列表项，并通过 toList()方法非常方便的转换成列表显示；step7
+              context: context,
+              tiles: tiles,
+              //新建的tiles在此；step7
+            ).toList(); //直接转换成List；step7
+
+            return new Scaffold(
+              appBar: new AppBar(
+                title: const Text('Saved Suggestion'),
+                //名为"Saved Suggestions"的新路由的应用栏;step7
+              ),
+              body: new ListView(
+                children: divided,
+                //body 中的children为divided，divided 包含 ListTiles 行的 ListView 和每行之间的分隔线；step7
+              ),
+            );
+            //builder 返回一个 Scaffold；step7
+          },
+      ),
+    );//Navigator（导航器）会在应用栏中自动添加一个"返回"按钮；step7
+    //无需调用Navigator.pop，点击后退按钮就会返回到主页路由；step7
+  }
+  //在类中直接添加方法
 }//step3
