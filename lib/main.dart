@@ -44,6 +44,10 @@ class RandomWords extends StatefulWidget{
 class RandomWordsState extends State<RandomWords>{
   final List<WordPair> _suggestion = <WordPair>[];
   //List类型的suggestion变量，初始化为空列表，其中的内容为单词对；step4
+
+  final Set<WordPair> _saved = new Set<WordPair>();
+  //Set 中不允许重复的值，故适用于创建收藏集合；step5
+
   final TextStyle _biggerFont = const TextStyle(fontSize: 18.0);
   //TextStyle类型的biggerFont变量，初始化为静态的TextStyle变量，其中的fontSize属性值为18.0；step4
   //在 Dart 语言中，使用下划线为前缀标识的变量或函数，会强制其变为所在类的私有变量或函数；step4
@@ -93,12 +97,21 @@ class RandomWordsState extends State<RandomWords>{
   }
 
   Widget _buildRow(WordPair wordPair){
+    final bool alreadySaved = _saved.contains(wordPair);
+    //新建一个bool型值，检查收藏的列表中是否已经包含了某单词对；step5
+
     return new ListTile(
       title: new Text(
         wordPair.asPascalCase,
         //生成的单词对要进行大驼峰式命名法美化；step4
         style: _biggerFont,
         //style属性的值设为之前声明的biggerFont变量改变字号大小；step4
+      ), 
+      trailing: Icon(
+        alreadySaved ? Icons.star : Icons.star_border,
+        //if语句三段式，按照bool类型值来判断是否改变icon绘图；step5
+        color: alreadySaved ? Colors.yellow : null,
+        //if语句三段式，按照bool类型值来判断是否改变颜色；step5
       ),
     );
   }
